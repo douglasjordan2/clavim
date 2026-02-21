@@ -10,16 +10,20 @@ return {
   },
 
   {
-    "neovim/nvim-lspconfig",
+    "williamboman/mason.nvim",
+    cmd = "Mason",
+    opts = {},
+  },
+
+  {
+    "williamboman/mason-lspconfig.nvim",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
+      "neovim/nvim-lspconfig",
       "hrsh7th/cmp-nvim-lsp",
     },
     config = function()
-      require("mason").setup()
-
       require("mason-lspconfig").setup({
         ensure_installed = {
           "ts_ls", "html", "cssls", "emmet_ls", "jsonls",
@@ -31,66 +35,65 @@ return {
 
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      local on_attach = function(_, bufnr)
-        local opts = { buffer = bufnr, silent = true }
-        vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
-        vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-        vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-        vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
-        vim.keymap.set("n", "<leader>ra", vim.lsp.buf.rename, opts)
-        vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-        vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-        vim.keymap.set("n", "<leader>cf", function() vim.lsp.buf.format({ async = false }) end, opts)
-      end
+      vim.lsp.config("*", {
+        capabilities = capabilities,
+      })
 
-      local lspconfig = require("lspconfig")
-
-      local servers = {
-        html = {},
-        cssls = {},
-        jsonls = {},
-        bashls = {},
-        dockerls = {},
-        yamlls = {},
-        emmet_ls = {
-          filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact" },
-        },
-        gopls = {
-          settings = {
-            gopls = {
-              analyses = { unusedparams = true },
-              staticcheck = true,
-              gofumpt = true,
-            },
+      vim.lsp.config("gopls", {
+        settings = {
+          gopls = {
+            analyses = { unusedparams = true },
+            staticcheck = true,
+            gofumpt = true,
           },
         },
-        rust_analyzer = {
-          settings = {
-            ["rust-analyzer"] = {
-              checkOnSave = { command = "clippy" },
-            },
-          },
-        },
-        lua_ls = {
-          settings = {
-            Lua = {
-              runtime = { version = "LuaJIT" },
-              diagnostics = { globals = { "vim" } },
-              workspace = {
-                library = { vim.env.VIMRUNTIME },
-                checkThirdParty = false,
-              },
-              telemetry = { enable = false },
-            },
-          },
-        },
-      }
+      })
 
-      for server, config in pairs(servers) do
-        config.capabilities = capabilities
-        config.on_attach = on_attach
-        lspconfig[server].setup(config)
-      end
+      vim.lsp.config("rust_analyzer", {
+        settings = {
+          ["rust-analyzer"] = {
+            checkOnSave = { command = "clippy" },
+          },
+        },
+      })
+
+      vim.lsp.config("lua_ls", {
+        settings = {
+          Lua = {
+            runtime = { version = "LuaJIT" },
+            diagnostics = { globals = { "vim" } },
+            workspace = {
+              library = { vim.env.VIMRUNTIME },
+              checkThirdParty = false,
+            },
+            telemetry = { enable = false },
+          },
+        },
+      })
+
+      vim.lsp.config("emmet_ls", {
+        filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact" },
+      })
+
+      vim.lsp.enable({
+        "gopls", "rust_analyzer", "lua_ls",
+        "html", "cssls", "jsonls", "bashls",
+        "dockerls", "yamlls", "emmet_ls",
+      })
+
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+          local opts = { buffer = args.buf, silent = true }
+          vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
+          vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+          vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+          vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
+          vim.keymap.set("n", "<leader>ra", vim.lsp.buf.rename, opts)
+          vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+          vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+          vim.keymap.set("n", "<leader>cf", function() vim.lsp.buf.format({ async = false }) end, opts)
+        end,
+      })
 
       vim.diagnostic.config({
         virtual_text = { prefix = "●" },
@@ -114,28 +117,8 @@ return {
     dependencies = { "nvim-lua/plenary.nvim", "hrsh7th/cmp-nvim-lsp" },
     ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
     config = function()
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-      local on_attach = function(_, bufnr)
-        local opts = { buffer = bufnr, silent = true }
-        vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
-        vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-        vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-        vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
-        vim.keymap.set("n", "<leader>ra", vim.lsp.buf.rename, opts)
-        vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-        vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-        vim.keymap.set("n", "<leader>oi", function()
-          vim.lsp.buf.code_action({
-            apply = true,
-            context = { only = { "source.organizeImports.ts" }, diagnostics = {} },
-          })
-        end, opts)
-      end
-
       require("typescript-tools").setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
+        capabilities = require("cmp_nvim_lsp").default_capabilities(),
         settings = {
           complete_function_calls = true,
           include_completions_with_insert_text = true,
