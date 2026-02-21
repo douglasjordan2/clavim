@@ -11,9 +11,9 @@ AI-native Neovim distro. Cursor features, terminal speed.
      ╚═════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚═╝╚═╝     ╚═╝
 ```
 
-ClaVim is an opinionated Neovim distribution built around [claudecode.nvim](https://github.com/douglasjordan2/claudecode.nvim) — bringing Cursor-like AI editing to Neovim with no API key required. Just your Claude Pro/Max subscription.
+![demo](demo.gif)
 
-SpaceVim helped a generation get started with Neovim. ClaVim is the AI-era equivalent.
+ClaVim is an opinionated Neovim distribution built around [claudecode.nvim](https://github.com/douglasjordan2/claudecode.nvim) — bringing Cursor-like AI editing to Neovim with no API key required. Just your Claude Pro/Max subscription.
 
 ## Install
 
