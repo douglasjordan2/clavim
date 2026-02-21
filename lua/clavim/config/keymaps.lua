@@ -31,7 +31,7 @@ map("n", "<leader>p", '"+p')
 map("v", "<leader>p", '"+p')
 map("n", "<leader>P", '"+P')
 
-map("n", "-", "<CMD>Oil<CR>")
+map("n", "<leader>?", "<CMD>ClavimCheatsheet<CR>", { silent = true })
 
 map("n", "<leader>;", function() Snacks.terminal() end)
 

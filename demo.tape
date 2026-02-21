@@ -8,36 +8,38 @@ Set Theme "Catppuccin Mocha"
 Set Padding 20
 Set Framerate 24
 
-# Pre-create the demo file with proper formatting
-Type "cat > /tmp/demo.js << 'EOF'"
+# Pre-create the demo file (hidden from recording)
+Hide
+Type@0 "cat > /tmp/demo.js << 'DEMO'"
 Enter
-Type "function fetchUsers(url, callback) {"
+Type@0 "function fetchUsers(url, callback) {"
 Enter
-Type "  const xhr = new XMLHttpRequest();"
+Type@0 "  const xhr = new XMLHttpRequest();"
 Enter
-Type "  xhr.open('GET', url);"
+Type@0 "  xhr.open('GET', url);"
 Enter
-Type "  xhr.onload = function() {"
+Type@0 "  xhr.onload = function() {"
 Enter
-Type "    if (xhr.status === 200) {"
+Type@0 "    if (xhr.status === 200) {"
 Enter
-Type "      callback(null, JSON.parse(xhr.responseText));"
+Type@0 "      callback(null, JSON.parse(xhr.responseText));"
 Enter
-Type "    } else {"
+Type@0 "    } else {"
 Enter
-Type "      callback(new Error(xhr.statusText));"
+Type@0 "      callback(new Error(xhr.statusText));"
 Enter
-Type "    }"
+Type@0 "    }"
 Enter
-Type "  };"
+Type@0 "  };"
 Enter
-Type "  xhr.send();"
+Type@0 "  xhr.send();"
 Enter
-Type "}"
+Type@0 "}"
 Enter
-Type "EOF"
+Type@0 "DEMO"
 Enter
 Sleep 500ms
+Show
 
 # 1. Launch ClaVim — dashboard appears
 Type "NVIM_APPNAME=clavim nvim --cmd 'set shortmess+=F'"

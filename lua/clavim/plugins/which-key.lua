@@ -22,11 +22,13 @@ return {
         { "<leader>ay", desc = "Accept Diff" },
         { "<leader>an", desc = "Reject Diff" },
 
+        { "<leader>?", desc = "Cheatsheet" },
         { "<leader>f", group = "Find" },
         { "<leader>g", group = "Git" },
         { "<leader>x", group = "Diagnostics" },
         { "<leader>u", group = "Toggle" },
         { "<leader>c", group = "Code" },
+        { "<leader>cd", desc = "Diagnostic Float" },
       },
     },
   },

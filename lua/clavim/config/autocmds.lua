@@ -21,3 +21,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
     vim.opt_local.relativenumber = true
   end,
 })
+
+vim.api.nvim_create_user_command("ClavimCheatsheet", function()
+  require("clavim.cheatsheet").open()
+end, {})

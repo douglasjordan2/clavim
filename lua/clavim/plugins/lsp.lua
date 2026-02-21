@@ -84,7 +84,7 @@ return {
       vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
           local opts = { buffer = args.buf, silent = true }
-          vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
+          vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, opts)
           vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
           vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
           vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
@@ -112,32 +112,4 @@ return {
     end,
   },
 
-  {
-    "pmizio/typescript-tools.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", "hrsh7th/cmp-nvim-lsp" },
-    ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
-    config = function()
-      require("typescript-tools").setup({
-        capabilities = require("cmp_nvim_lsp").default_capabilities(),
-        settings = {
-          complete_function_calls = true,
-          include_completions_with_insert_text = true,
-          tsserver_format_options = {
-            indentSize = 2,
-            tabSize = 2,
-            convertTabsToSpaces = true,
-          },
-          tsserver_file_preferences = {
-            includeInlayParameterNameHints = "all",
-            includeInlayFunctionParameterTypeHints = true,
-            includeInlayVariableTypeHints = true,
-            includeCompletionsForModuleExports = true,
-            includeCompletionsWithInsertText = true,
-            includeAutomaticOptionalChainCompletions = true,
-          },
-          expose_as_code_action = "all",
-        },
-      })
-    end,
-  },
 }

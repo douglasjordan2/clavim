@@ -38,6 +38,7 @@ return {
             { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
             { icon = " ", key = "c", desc = "Config", action = ":lua Snacks.picker.files({ cwd = vim.fn.stdpath('config') })" },
             { icon = "󰋠 ", key = "h", desc = "Health Check", action = ":checkhealth clavim" },
+            { icon = " ", key = "?", desc = "Cheatsheet", action = ":ClavimCheatsheet" },
             { icon = " ", key = "q", desc = "Quit", action = ":qa" },
           },
         },
@@ -59,6 +60,7 @@ return {
             padding = 1,
           },
           { section = "startup" },
+          { text = "Press ? for keybindings · <leader> to explore", align = "center", hl = "Comment", padding = 1 },
         },
       },
       picker = {
@@ -139,13 +141,6 @@ return {
       { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Symbols" },
       { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix" },
     },
-  },
-
-  {
-    "stevearc/oil.nvim",
-    lazy = false,
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = {},
   },
 
   { "NvChad/nvim-colorizer.lua", event = "BufReadPost", config = true },

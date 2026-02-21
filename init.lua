@@ -16,10 +16,13 @@ require("clavim.config.options")
 require("clavim.config.keymaps")
 require("clavim.config.autocmds")
 
+local spec = {
+  { import = "clavim.plugins" },
+}
+vim.list_extend(spec, require("clavim.extras"))
+
 require("lazy").setup({
-  spec = {
-    { import = "clavim.plugins" },
-  },
+  spec = spec,
   defaults = { lazy = true },
   install = { colorscheme = { "onenord", "habamax" } },
   checker = { enabled = false },
