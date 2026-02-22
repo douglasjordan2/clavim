@@ -55,7 +55,7 @@ Plugins install automatically on first launch.
 
 ## Keymaps
 
-Press `<leader>` and wait to see all available commands via which-key.
+Press `<leader>?` to open the cheatsheet, or `<leader>` and wait for which-key.
 
 ### AI (Claude) — `<leader>a`
 
@@ -110,7 +110,7 @@ Press `<leader>` and wait to see all available commands via which-key.
 | `<leader>s` | Save |
 | `<leader>qq` | Quit all |
 | `-` | Open file browser (Oil) |
-| `<leader>e` | File explorer (Snacks) |
+| `<leader>e` | File explorer |
 | `<leader>;` | Toggle terminal |
 | `<leader>b` | Buffer picker |
 | `<leader>.` | Scratch buffer |
@@ -122,7 +122,9 @@ Press `<leader>` and wait to see all available commands via which-key.
 | `<leader>ca` | Code action |
 | `<leader>ra` | Rename symbol |
 
-## Plugins (15)
+## Plugins
+
+### Core (always loaded)
 
 | Plugin | Role |
 |---|---|
@@ -132,16 +134,33 @@ Press `<leader>` and wait to see all available commands via which-key.
 | [which-key.nvim](https://github.com/folke/which-key.nvim) | Keymap discovery popups |
 | [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) | LSP client |
 | [mason.nvim](https://github.com/williamboman/mason.nvim) | LSP server installer |
-| [typescript-tools.nvim](https://github.com/pmizio/typescript-tools.nvim) | TypeScript (auto-imports, inlay hints) |
 | [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) | Completion engine |
 | [LuaSnip](https://github.com/L3MON4D3/LuaSnip) | Snippets |
 | [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) | Syntax highlighting + indent |
-| [mini.nvim](https://github.com/echasnovski/mini.nvim) | Surround, pairs, git, diff |
-| [flash.nvim](https://github.com/folke/flash.nvim) | Jump motions |
+| [mini.nvim](https://github.com/echasnovski/mini.nvim) | Pairs, git signs, diff |
 | [trouble.nvim](https://github.com/folke/trouble.nvim) | Diagnostics panel |
-| [oil.nvim](https://github.com/stevearc/oil.nvim) | File browser |
 | [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) | Statusline (with Claude status) |
 | [onenord.nvim](https://github.com/rmehri01/onenord.nvim) | Colorscheme (dark, true black) |
+
+### Extras (opt-in)
+
+| Plugin | Extra | Role |
+|---|---|---|
+| [flash.nvim](https://github.com/folke/flash.nvim) | `editor.flash` | Jump motions |
+| [mini.surround](https://github.com/echasnovski/mini.nvim) | `editor.mini-surround` | Surround actions (sa/sd/sr) |
+| [oil.nvim](https://github.com/stevearc/oil.nvim) | `editor.oil` | File browser (`-`) |
+| [typescript-tools.nvim](https://github.com/pmizio/typescript-tools.nvim) | `lang.typescript` | TypeScript (auto-imports, inlay hints) |
+
+All extras are **enabled by default**. To disable one, remove its line from `lua/clavim/config/extras.lua`:
+
+```lua
+return {
+  "editor.flash",
+  "editor.mini-surround",
+  "editor.oil",
+  "lang.typescript",
+}
+```
 
 ## Structure
 
@@ -149,20 +168,29 @@ Press `<leader>` and wait to see all available commands via which-key.
 clavim/
   init.lua                        # Bootstrap + lazy.nvim setup
   lua/clavim/
+    cheatsheet.lua                # :ClavimCheatsheet / <leader>?
     health.lua                    # :checkhealth clavim
     config/
       options.lua                 # Editor defaults
       keymaps.lua                 # Global keybindings
       autocmds.lua                # Autocommands
-    plugins/
+      extras.lua                  # Enabled extras (remove lines to disable)
+    plugins/                      # Core (always loaded)
       ai.lua                     # claudecode.nvim
       completion.lua              # nvim-cmp + LuaSnip
-      editor.lua                  # flash, mini.nvim (surround, pairs, git, diff)
-      lsp.lua                    # lspconfig + mason + typescript-tools
+      editor.lua                  # mini.nvim (pairs, git, diff)
+      lsp.lua                    # lspconfig + mason
       theme.lua                   # onenord colorscheme
       treesitter.lua              # Treesitter + parsers
-      ui.lua                     # snacks, lualine, trouble, oil, colorizer
+      ui.lua                     # snacks, lualine, trouble, colorizer
       which-key.lua               # Keymap discovery
+    extras/                       # Opt-in modules
+      editor/
+        flash.lua                # flash.nvim
+        mini-surround.lua        # mini.surround
+        oil.lua                  # oil.nvim
+      lang/
+        typescript.lua           # typescript-tools.nvim
 ```
 
 ## Philosophy
